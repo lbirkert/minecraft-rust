@@ -61,6 +61,14 @@ impl ChunkLoader {
         Some(chunk)
     }
 
+    pub fn get_mut_chunk_fast(&mut self, x: i32, z: i32) -> Option<&mut Arc<Chunk>> {
+        let cid = Chunk::get_id(x, z);
+        let chunk = self.loaded_chunks.get_mut(&cid)?;
+        assert_eq!(chunk.x, x);
+        assert_eq!(chunk.z, z);
+        Some(chunk)
+    }
+
     pub fn is_chunk_loaded(&self, x: i32, z: i32) -> bool {
         let cid = Chunk::get_id(x, z);
         self.loaded_chunks.contains_key(&cid)

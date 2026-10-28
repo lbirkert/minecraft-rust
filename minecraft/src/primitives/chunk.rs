@@ -8,6 +8,7 @@ use crate::config::{
 };
 use crate::primitives::BlockData;
 
+#[derive(Clone)]
 pub struct Chunk {
     pub x: i32,
     pub z: i32,
@@ -55,6 +56,32 @@ impl Chunk {
         let data = &self.block_data[self.blocks[bid as usize] as usize];
 
         Some(data)
+    }
+
+    pub fn set_block_data(&mut self, pos: &Point3<i32>, data: BlockData) -> Option<()> {
+        let (x, z, bid) = Self::get_block_id(pos)?;
+        if self.x != x || self.z != z {
+            return None;
+        }
+
+        let existing_idx = self
+            .block_data
+            .iter()
+            .enumerate()
+            .find_map(
+                |(i, existing)| {
+                    if existing == &data { Some(i) } else { None }
+                },
+            );
+
+        let block_data_idx = existing_idx.unwrap_or_else(|| {
+            self.block_data.push(data);
+            self.block_data.len() - 1
+        });
+
+        self.blocks[bid as usize] = block_data_idx as u32;
+
+        Some(())
     }
 
     pub fn should_render(x: i32, z: i32, pos: &Point3<i32>) -> bool {

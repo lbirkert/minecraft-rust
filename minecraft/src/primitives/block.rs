@@ -2,34 +2,32 @@ use nalgebra::{Point3, Vector3};
 
 use crate::physics::Aabb;
 
-#[derive(Clone)]
-pub enum BlockKind {
+#[derive(Clone, Eq, PartialEq)]
+pub enum BlockData {
     Air,
     Grass,
     Dirt,
     Stone,
-}
-
-impl BlockKind {
-    pub fn get_model(&self) -> Option<&'static str> {
-        match self {
-            BlockKind::Air => None,
-            BlockKind::Grass => Some("block/grass_normal"),
-            BlockKind::Dirt => Some("block/dirt"),
-            BlockKind::Stone => Some("block/stone"),
-        }
-    }
-}
-
-#[derive(Clone)]
-pub struct BlockData {
-    pub kind: BlockKind,
-    // TODO: add nbt here
+    Bedrock,
 }
 
 impl BlockData {
+    pub fn get_model(&self) -> Option<&'static str> {
+        match self {
+            BlockData::Air => None,
+            BlockData::Grass => Some("block/grass_normal"),
+            BlockData::Dirt => Some("block/dirt"),
+            BlockData::Stone => Some("block/stone"),
+            BlockData::Bedrock => Some("block/bedrock"),
+        }
+    }
+
     pub fn is_air(&self) -> bool {
-        matches!(self.kind, BlockKind::Air)
+        matches!(self, BlockData::Air)
+    }
+
+    pub fn is_unbreakable(&self) -> bool {
+        matches!(self, BlockData::Bedrock)
     }
 }
 

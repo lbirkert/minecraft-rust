@@ -75,18 +75,14 @@ impl ChunkRenderer {
         &mut self,
         queue: &mut wgpu::Queue,
         chunks: impl Iterator<Item = &'a ChunkMesh>,
-        selected_block: Option<(u64, u32)>,
+        selected_block: Option<(i32, i32, u32)>,
         len: usize,
     ) {
         let mut bytes = vec![0u8; len * self.uniform_stride as usize];
 
         for (i, mesh) in chunks.enumerate() {
-            let current_cid = Chunk::get_id(mesh.x, mesh.z);
             let selected_block = match selected_block {
-                Some((cid, bid)) if current_cid == cid => {
-                    println!("I HAVE SELECTION: {}", bid);
-                    bid
-                }
+                Some((cx, cz, bid)) if cx == mesh.x && cz == mesh.z => bid,
                 _ => u32::MAX,
             };
 

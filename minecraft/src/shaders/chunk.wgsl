@@ -127,10 +127,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4f {
 
     var color: vec4f = textureSample(atlas, atlas_sampler, in.uv / size);
     color *= in.tint;
-    color *= dot(in.normal, vec3f(0.0, 1.0, 0.0)) * 0.5 + 0.5;
+    color *= dot(in.normal, vec3f(0.0, 1.0, 0.0)) * 0.3 + 0.7;
 
     if in.is_selected == 1 {
-        color += vec4f(0.5, 0.5, 0.5, 0.0);
+        color += 0.3 * vec4f(1.0, 1.0, 1.0, 0.0);
     }
 
     return color;

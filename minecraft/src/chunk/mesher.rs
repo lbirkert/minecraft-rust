@@ -9,7 +9,7 @@ use std::{
 };
 
 use log::info;
-use nalgebra::Point3;
+use nalgebra::{Point3, Vector3};
 use rayon::ThreadPool;
 use wgpu::util::DeviceExt;
 
@@ -38,6 +38,7 @@ pub struct ChunkMesh {
     pub buffer: wgpu::Buffer,
     pub loaded_at: Instant,
     pub has_neighbors: [bool; 4],
+    reload: bool,
 }
 
 struct MeshTask {
@@ -100,9 +101,40 @@ impl ChunkMesher {
                     z: output.z,
                     loaded_at: Instant::now(),
                     buffer,
+                    reload: false,
                 },
             );
         }
+    }
+
+    pub fn reload_mesh(&mut self, x: i32, z: i32) -> Option<()> {
+        let cid = Chunk::get_id(x, z);
+        let mesh = self.meshes.get_mut(&cid)?;
+        mesh.reload = true;
+        Some(())
+    }
+
+    pub fn block_update(&mut self, pos: &Point3<i32>) -> Option<()> {
+        let (x, z) = Chunk::get_xz_from_vec3(pos);
+        let rel_pos = pos - &Chunk::get_bottom_left(x, z);
+
+        if rel_pos.x == 0 {
+            self.reload_mesh(x - 1, z);
+        }
+
+        if rel_pos.x == 15 {
+            self.reload_mesh(x + 1, z);
+        }
+
+        if rel_pos.z == 0 {
+            self.reload_mesh(x, z - 1);
+        }
+
+        if rel_pos.z == 15 {
+            self.reload_mesh(x, z + 1);
+        }
+
+        self.reload_mesh(x, z)
     }
 
     // load/unload meshes for a player
@@ -139,9 +171,8 @@ impl ChunkMesher {
                 let zpos = world.chunk_loader.get_chunk_fast(x, z + 1);
                 let zneg = world.chunk_loader.get_chunk_fast(x, z - 1);
 
-                match self.meshes.get(&cid) {
+                match self.meshes.get_mut(&cid) {
                     Some(mesh) => {
-                        // reload mesh if has_neighbors changed
                         let has_neighbors = [
                             xpos.is_some(),
                             xneg.is_some(),
@@ -149,7 +180,8 @@ impl ChunkMesher {
                             zneg.is_some(),
                         ];
 
-                        if mesh.has_neighbors != has_neighbors {
+                        // reload mesh if has_neighbors changed or reload requested
+                        if mesh.has_neighbors != has_neighbors || mesh.reload {
                             self.load_mesh(
                                 chunk.clone(),
                                 self.assets.clone(),
@@ -252,7 +284,7 @@ impl ChunkMesher {
                         continue;
                     }
 
-                    let key = b.kind.get_model().unwrap();
+                    let key = b.get_model().unwrap();
                     let model = task.assets.model_registry.models.get(key).unwrap();
 
                     // get neighbors

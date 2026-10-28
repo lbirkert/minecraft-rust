@@ -1,6 +1,6 @@
-use std::{collections::HashMap, rc::Rc};
+use std::{collections::HashMap, rc::Rc, sync::Arc};
 
-use nalgebra::{Point3, Vector3};
+use nalgebra::Point3;
 use rayon::ThreadPool;
 
 use crate::{
@@ -29,6 +29,14 @@ impl World {
     pub fn get_block_data_fast(&self, pos: &Point3<i32>) -> Option<&BlockData> {
         let (x, z) = Chunk::get_xz_from_vec3(pos);
         let chunk = self.chunk_loader.get_chunk_fast(x, z)?;
+
         chunk.get_block_data(pos)
+    }
+
+    // TODO: invalidate mesh
+    pub fn set_block_data_fast(&mut self, pos: &Point3<i32>, data: BlockData) -> Option<()> {
+        let (x, z) = Chunk::get_xz_from_vec3(pos);
+        let chunk = self.chunk_loader.get_mut_chunk_fast(x, z)?;
+        Arc::make_mut(chunk).set_block_data(pos, data)
     }
 }
