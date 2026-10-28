@@ -5,9 +5,9 @@ use crate::physics::Aabb;
 #[derive(Default, Eq, PartialEq, Hash, Clone, Copy)]
 pub struct PlayerId(u64);
 
-impl Into<PlayerId> for u64 {
-    fn into(self) -> PlayerId {
-        PlayerId(self)
+impl From<u64> for PlayerId {
+    fn from(val: u64) -> Self {
+        PlayerId(val)
     }
 }
 

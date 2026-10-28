@@ -77,10 +77,10 @@ impl PlayerPhysics {
 
                     let block_aabb = Block::get_aabb(&block_pos);
 
-                    if let Some((t, normal)) = aabb.sweep(&block_aabb, movement) {
-                        if earliest.is_none_or(|(best_t, _)| t < best_t) {
-                            earliest = Some((t, normal));
-                        }
+                    if let Some((t, normal)) = aabb.sweep(&block_aabb, movement)
+                        && earliest.is_none_or(|(best_t, _)| t < best_t)
+                    {
+                        earliest = Some((t, normal));
                     }
                 }
             }

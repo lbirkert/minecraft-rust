@@ -27,8 +27,8 @@ impl ChunkGenerator {
         for y in (CHUNK_OFFSET_Y)..(CHUNK_WIDTH_Y + CHUNK_OFFSET_Y) {
             for z in 0..CHUNK_WIDTH_X {
                 for x in 0..CHUNK_WIDTH_Z {
-                    let x = x + cx * CHUNK_WIDTH_X;
-                    let z = z + cz * CHUNK_WIDTH_Z;
+                    let _x = x + cx * CHUNK_WIDTH_X;
+                    let _z = z + cz * CHUNK_WIDTH_Z;
                     // let height: i32 = ((x as f32 * 0.15).sin() * 20.0) as i32
                     //     + ((z as f32 * 0.1).sin() * 5.0) as i32;
 

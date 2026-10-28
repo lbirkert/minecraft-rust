@@ -1,21 +1,8 @@
-use std::{
-    process::ExitCode,
-    rc::Rc,
-    sync::Arc,
-    thread::sleep,
-    time::{Duration, Instant},
-};
+use std::{rc::Rc, sync::Arc, time::Instant};
 
-use log::{debug, info};
 use nalgebra::{Point3, Vector3};
 use rayon::{ThreadPool, ThreadPoolBuilder};
-use winit::{
-    application::ApplicationHandler,
-    event::{ElementState, WindowEvent},
-    event_loop::{EventLoop, OwnedDisplayHandle},
-    platform::pump_events::{EventLoopExtPumpEvents, PumpStatus},
-    window::Window,
-};
+use winit::{event_loop::OwnedDisplayHandle, window::Window};
 
 use crate::{
     assets::AssetsLoader,
@@ -402,7 +389,7 @@ impl Game {
             self.chunk_mesher.meshes.len(),
         );
         for (i, mesh) in self.chunk_mesher.meshes.values().enumerate() {
-            self.chunk_renderer.render(&mut renderpass, &mesh, i as u64);
+            self.chunk_renderer.render(&mut renderpass, mesh, i as u64);
         }
 
         // End the renderpass.

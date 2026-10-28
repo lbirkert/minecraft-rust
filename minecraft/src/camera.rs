@@ -1,6 +1,6 @@
-use nalgebra::{Isometry3, Matrix4, Perspective3, Point3, Vector3};
+use nalgebra::{Isometry3, Matrix4, Perspective3, Vector3};
 
-use crate::{physics::PlayerPhysics, primitives::Player};
+use crate::primitives::Player;
 
 #[repr(C)]
 #[derive(Clone, Copy, bytemuck::Pod, bytemuck::Zeroable)]
@@ -10,23 +10,8 @@ struct CameraUniform {
 
 pub struct Camera {
     pub fov: f32,
-    pub keys: CameraKeys,
-    pub move_speed: f32,
-    pub speed_modifier: f32,
-
     pub camera_uniform_buffer: wgpu::Buffer,
     pub screen_size: winit::dpi::PhysicalSize<u32>,
-}
-
-#[derive(Default)]
-pub struct CameraKeys {
-    pub forward: bool,
-    pub backward: bool,
-    pub left: bool,
-    pub right: bool,
-    pub up: bool,
-    pub down: bool,
-    pub sprint: bool,
 }
 
 impl Camera {
@@ -35,10 +20,7 @@ impl Camera {
 
         Self {
             fov: 90.0,
-            move_speed: 5.0,
-            speed_modifier: 2.0,
             screen_size,
-            keys: CameraKeys::default(),
             camera_uniform_buffer,
         }
     }

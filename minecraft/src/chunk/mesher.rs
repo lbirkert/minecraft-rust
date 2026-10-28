@@ -14,7 +14,7 @@ use rayon::ThreadPool;
 use wgpu::util::DeviceExt;
 
 use crate::{
-    assets::{Assets, ModelRegistry},
+    assets::Assets,
     chunk::renderer::Instance,
     config::{
         CHUNK_OFFSET_Y, CHUNK_RENDER_AFTER, CHUNK_RENDER_DISTANCE, CHUNK_WIDTH_X, CHUNK_WIDTH_Y,

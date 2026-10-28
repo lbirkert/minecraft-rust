@@ -1,30 +1,15 @@
-use std::{
-    process::ExitCode,
-    rc::Rc,
-    sync::Arc,
-    thread::sleep,
-    time::{Duration, Instant},
-};
+use std::{process::ExitCode, sync::Arc, thread::sleep, time::Duration};
 
 use log::{debug, info};
-use nalgebra::{Point3, Vector3};
-use rayon::{ThreadPool, ThreadPoolBuilder};
 use winit::{
     application::ApplicationHandler,
-    event::{ElementState, WindowEvent},
-    event_loop::{EventLoop, OwnedDisplayHandle},
+    event::WindowEvent,
+    event_loop::EventLoop,
     platform::pump_events::{EventLoopExtPumpEvents, PumpStatus},
     window::Window,
 };
 
-use crate::{
-    assets::AssetsLoader,
-    camera::Camera,
-    chunk::{ChunkMesher, ChunkRenderer},
-    game::Game,
-    physics::{PlayerPhysics, raycast},
-    primitives::{BlockData, Chunk, Player, World},
-};
+use crate::game::Game;
 
 mod assets;
 mod camera;
@@ -60,11 +45,8 @@ impl ApplicationHandler for App {
         event: winit::event::DeviceEvent,
     ) {
         let game = self.game.as_mut().unwrap();
-        match event {
-            winit::event::DeviceEvent::MouseMotion { delta: (dx, dy) } => {
-                game.process_mouse_event(dx, dy)
-            }
-            _ => {}
+        if let winit::event::DeviceEvent::MouseMotion { delta: (dx, dy) } = event {
+            game.process_mouse_event(dx, dy)
         }
     }
 

@@ -5,7 +5,6 @@ use wgpu::util::DeviceExt;
 use crate::{
     chunk::ChunkMesh,
     config::{CHUNK_OFFSET_Y, CHUNK_WIDTH_X, CHUNK_WIDTH_Z},
-    primitives::Chunk,
 };
 
 pub struct ChunkRenderer {
