@@ -12,12 +12,13 @@ use winit::{
 use crate::game::Game;
 
 mod assets;
-mod camera;
-mod chunk;
 mod config;
 mod game;
+mod gui;
 mod physics;
 mod primitives;
+mod renderer;
+mod terrain;
 
 #[derive(Default)]
 struct App {
@@ -57,24 +58,11 @@ impl ApplicationHandler for App {
         event: winit::event::WindowEvent,
     ) {
         let game = self.game.as_mut().unwrap();
+        game.process_window_event(&event);
         match event {
             WindowEvent::CloseRequested => {
                 info!("The close button was pressed; stopping");
                 event_loop.exit();
-            }
-            WindowEvent::RedrawRequested => {
-                game.render();
-            }
-            WindowEvent::KeyboardInput { event, .. } => {
-                game.process_key_event(event);
-            }
-            WindowEvent::MouseInput { button, state, .. } => {
-                game.process_mouse_input(button, state);
-            }
-            WindowEvent::Resized(size) => {
-                // Reconfigures the size of the surface. We do not re-render
-                // here as this event is always followed up by redraw request.
-                game.resize(size);
             }
             _ => (),
         }

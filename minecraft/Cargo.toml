@@ -16,3 +16,6 @@ serde_json = "1.0.154"
 serde = { version = "1.0.229", features = ["derive"] }
 image = "0.25.10"
 tex-packer-core = "0.3.0"
+egui = { version = "0.37.0", features = ["default", "default_fonts"] }
+egui-wgpu = "0.37.0"
+egui-winit = "0.37.0"

@@ -47,6 +47,7 @@ impl Chunk {
         Some((x, z, block_idx as u32))
     }
 
+    // TODO: simplify
     pub fn get_block_data(&self, pos: &Point3<i32>) -> Option<&BlockData> {
         let (x, z, bid) = Self::get_block_id(pos)?;
         if self.x != x || self.z != z {
@@ -56,6 +57,15 @@ impl Chunk {
         let data = &self.block_data[self.blocks[bid as usize] as usize];
 
         Some(data)
+    }
+
+    pub fn get_block_data_id(&self, pos: &Point3<i32>) -> Option<usize> {
+        let (x, z, bid) = Self::get_block_id(pos)?;
+        if self.x != x || self.z != z {
+            return None;
+        }
+
+        Some(self.blocks[bid as usize] as usize)
     }
 
     pub fn set_block_data(&mut self, pos: &Point3<i32>, data: BlockData) -> Option<()> {

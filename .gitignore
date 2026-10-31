@@ -1,5 +1,5 @@
 target/
-assets/
+/assets/
 .DS_Store
 *.log
 atlas-0.png

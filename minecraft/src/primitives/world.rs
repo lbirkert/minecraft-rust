@@ -4,20 +4,20 @@ use nalgebra::Point3;
 use rayon::ThreadPool;
 
 use crate::{
-    chunk::ChunkLoader,
     primitives::{BlockData, Chunk, Player, PlayerId},
+    terrain::TerrainLoader,
 };
 
 pub struct World {
     pub players: HashMap<PlayerId, Player>,
-    pub chunk_loader: ChunkLoader,
+    pub chunk_loader: TerrainLoader,
 }
 
 impl World {
     pub fn new(thread_pool: Rc<ThreadPool>, seed: u32) -> Self {
         Self {
             players: Default::default(),
-            chunk_loader: ChunkLoader::new(thread_pool, seed),
+            chunk_loader: TerrainLoader::new(thread_pool, seed),
         }
     }
 

@@ -1,6 +1,6 @@
 use nalgebra::{Point3, Vector3};
 
-use crate::physics::Aabb;
+use crate::{physics::Aabb, primitives::Inventory};
 
 #[derive(Default, Eq, PartialEq, Hash, Clone, Copy)]
 pub struct PlayerId(u64);
@@ -19,6 +19,7 @@ pub struct Player {
     pub vel: Vector3<f32>, // velocity of feet center
     pub yaw: f32,
     pub pitch: f32,
+    pub inventory: Inventory,
 }
 
 impl Player {

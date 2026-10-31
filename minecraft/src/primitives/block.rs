@@ -9,6 +9,13 @@ pub enum BlockData {
     Dirt,
     Stone,
     Bedrock,
+    AcaciaStairs,
+    AcaciaBark,
+    AcaciaLeaves,
+    AcaciaLog,
+    AcaciaPlanks,
+    AcaciaDoor,
+    AcaciaFence,
 }
 
 impl BlockData {
@@ -19,6 +26,13 @@ impl BlockData {
             BlockData::Dirt => Some("block/dirt"),
             BlockData::Stone => Some("block/stone"),
             BlockData::Bedrock => Some("block/bedrock"),
+            BlockData::AcaciaStairs => Some("block/acacia_stairs"),
+            BlockData::AcaciaBark => Some("block/acacia_bark"),
+            BlockData::AcaciaLeaves => Some("block/acacia_leaves"),
+            BlockData::AcaciaLog => Some("block/acacia_log"),
+            BlockData::AcaciaPlanks => Some("block/acacia_planks"),
+            BlockData::AcaciaDoor => Some("block/acacia_door_bottom"),
+            BlockData::AcaciaFence => Some("block/acacia_fence_post"), // TODO: variants
         }
     }
 
